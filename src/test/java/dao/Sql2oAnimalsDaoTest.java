@@ -59,8 +59,20 @@ public class Sql2oAnimalsDaoTest {
     }
     @Test
     public void deleteAnimalById() throws Exception {
-
-        assertEquals();
+        Animals animals = setupNewAnimal();
+        animalsDao.add(animals);
+        animalsDao.deleteById(animals.getId());
+        assertEquals(0, animalsDao.getAll().size());
+    }
+    @Test
+    public void clearAllClearsAll() throws Exception {
+        Animals animals = setupNewAnimal();
+        Animals otherAnimals = new Animals("Mocha", "Male", "Dog", "Shepherd", "01/17/2018");
+        animalsDao.add(animals);
+        animalsDao.add(otherAnimals);
+        int daoSize = animalsDao.getAll().size();
+        animalsDao.clearAllAnimals();
+        assertTrue(daoSize > 0 && daoSize > animalsDao.getAll().size()); //this is a little overcomplicated, but illustrates well how we might use `assertTrue` in a different way.
     }
 
     public Animals setupNewAnimal(){

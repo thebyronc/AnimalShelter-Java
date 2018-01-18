@@ -1,0 +1,13 @@
+{{#partial "content"}}
+     {{#if animals}}
+         {{#each animals}}
+            <ul>
+                <li>{{name}}</li>
+                <li>{{gender}}</li>
+                <li>{{type}}</li>
+                <li>{{breed}}</li>
+            </ul>
+         {{/each}}
+     {{/if}}
+{{/partial}}
+{{>layout.hbs}}
