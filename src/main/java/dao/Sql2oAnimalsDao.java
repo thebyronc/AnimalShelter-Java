@@ -74,5 +74,15 @@ public class Sql2oAnimalsDao implements AnimalsDao {
         }
     }
 
+    @Override
+    public void deleteById(int id) {
+        String sql = "Delete from animals WHERE id=:id";
+        try(Connection con = sql2o.open()) {
+            con.createQuery(sql).executeUpdate();
+        } catch (Sql2oException ex) {
+            System.out.println(ex);
+        }
+    }
+
 
 }

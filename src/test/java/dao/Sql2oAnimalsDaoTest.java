@@ -57,6 +57,11 @@ public class Sql2oAnimalsDaoTest {
         Animals updatedAnimal = animalsDao.findById(animals.getId());
         assertNotEquals(initialBreed, updatedAnimal.getBreed());
     }
+    @Test
+    public void deleteAnimalById() throws Exception {
+
+        assertEquals();
+    }
 
     public Animals setupNewAnimal(){
         return new Animals("Mocha", "Male", "Dog", "Shepherd", "01/17/2018");
