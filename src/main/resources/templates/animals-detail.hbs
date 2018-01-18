@@ -1,0 +1,22 @@
+{{#partial "content"}}
+
+    <p>Name:</p>
+
+    <p>{{ animals.name }}</p>
+    <h5>Gender:</h5>
+    <p> {{ animals.gender }}</p>
+    <p>Type:</p>
+
+    <p>{{ animals.type }}</p>
+    <h5>Date Submitted:</h5>
+    <p> {{ animals.dateSubmitted }}</p>
+
+    <h5>Task status:</h5>
+    <p>
+        <a href="/animals/{{animals.id}}/update">Edit this animal</a><br>
+        <a href="/animals/{{animals.id}}/delete">DELETE this animal (no undo)</a>
+    </p>
+
+{{/partial}}
+
+{{> layout.hbs}}

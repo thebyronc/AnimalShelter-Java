@@ -44,13 +44,13 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //post: process new task form
-        post("/animals/new", (request, response) -> {
+        post("/animals/new", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            String name = request.queryParams("animalName");
-            String gender = request.queryParams("animalGender");
-            String type = request.queryParams("animalType");
-            String breed = request.queryParams("animalBreed");
-            String dateSubmitted = request.queryParams("dateSubmitted");
+            String name = req.queryParams("animalName");
+            String gender = req.queryParams("animalGender");
+            String type = req.queryParams("animalType");
+            String breed = req.queryParams("animalBreed");
+            String dateSubmitted = req.queryParams("dateSubmitted");
             Animals newAnimal = new Animals(name, gender, type, breed, dateSubmitted); //ignore the hardcoded categoryId
             animalsDao.add(newAnimal);
             model.put("animals", newAnimal);
@@ -58,28 +58,42 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
         //get: show a form to update a task
-        get("/tasks/update", (req, res) -> {
+        get("/animals/:id/update", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            int idOfTaskToEdit = Integer.parseInt(req.params("id"));
-            Animals editAnimals = animalsDao.findById(idOfTaskToEdit);
-            model.put("editAnimals", editAnimals);
-            return new ModelAndView(model, "task-form.hbs");
+            int idOfAnimalToEdit = Integer.parseInt(req.params("id"));
+            Animals editAnimal = animalsDao.findById(idOfAnimalToEdit);
+            model.put("editAnimal", editAnimal);
+            return new ModelAndView(model, "animal-form.hbs");
         }, new HandlebarsTemplateEngine());
 
-        //post: process a form to update a task
-        post("/tasks/update", (req, res) -> {
+        //task: process a form to update a task
+        post("/animals/:id/update", (req, res) -> { //URL to make new task on POST route
             Map<String, Object> model = new HashMap<>();
-            String newContent = req.queryParams("description");
-            int idOfAnimalToEdit = Integer.parseInt(req.queryParams("id"));
-            Animals editAnimals = animalsDao.findById(idOfAnimalToEdit);
-            animalsDao.update(idOfAnimalToEdit, newContent, 1); //ignore the hardcoded categoryId for now.
-            return new ModelAndView(model, "success.hbs");
+            String name = req.queryParams("animalName");
+            String gender = req.queryParams("animalGender");
+            String type = req.queryParams("animalType");
+            String breed = req.queryParams("animalBreed");
+            String dateSubmitted = req.queryParams("dateSubmitted");
+
+            int idOfAnimalToEdit = Integer.parseInt(req.params("id"));
+            Animals editAnimal = animalsDao.findById(idOfAnimalToEdit);
+            animalsDao.update(idOfAnimalToEdit, name, gender, type, breed, dateSubmitted);
+            return new ModelAndView(model, "update.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        //get: show an individual task that is nested in a category
+        get("/animals/:animal_id", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            int idOfAnimalToFind = Integer.parseInt(req.params("animal_id"));
+            Animals foundAnimal = animalsDao.findById(idOfAnimalToFind);
+            model.put("animals", foundAnimal);
+            return new ModelAndView(model, "animals-detail.hbs");
         }, new HandlebarsTemplateEngine());
 
         //get: delete an individual task
-        get("categories/:category_id/tasks/:task_id/delete", (req, res) -> {
+        get("/animals/:animal_id/delete", (req, res) -> {
             Map<String, Object> model = new HashMap<>();
-            int idOfAnimalToDelete = Integer.parseInt(req.params("task_id"));
+            int idOfAnimalToDelete = Integer.parseInt(req.params(":animal_id"));
             Animals deleteAnimals = animalsDao.findById(idOfAnimalToDelete);
             animalsDao.deleteById(idOfAnimalToDelete);
             return new ModelAndView(model, "success.hbs");
